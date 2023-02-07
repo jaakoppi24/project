@@ -2,6 +2,11 @@ import { serve } from "https://deno.land/std@0.171.0/http/server.ts";
 import { configure } from "https://deno.land/x/eta@v2.0.0/mod.ts";
 import * as listController from "./controllers/listController.js";
 import * as itemController from "./controllers/itemController.js";
+import { renderFile } from "https://deno.land/x/eta@v2.0.0/mod.ts";
+
+const responseDetails = {
+  headers: { "Content-Type": "text/html;charset=UTF-8" },
+};
 
 configure({
   views: `${Deno.cwd()}/views/`,
@@ -11,12 +16,7 @@ const handleRequest = async (request) => {
   const url = new URL(request.url);
 
   if (url.pathname === "/" && request.method === "GET") {
-    return new Response(`Redirecting to /lists.`, {
-      status: 303,
-      headers: {
-        "Location": "/lists",
-      },
-    });
+    return new Response(await renderFile("main.eta"), responseDetails);
   } else if (url.pathname === "/lists" && request.method === "POST") {
     return await listController.addList(request);
   } else if (url.pathname === "/lists" && request.method === "GET") {
