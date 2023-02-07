@@ -18,4 +18,13 @@ const findById = async (id) => {
   return { id: 0, name: "Unknown" };
 };
 
-export { create, findAllActive, findById };
+const deactivate = async (id) => {
+  await sql`UPDATE shopping_lists SET active = false WHERE id = ${id}`;
+};
+
+const countLists = async () => {
+  const rows = await sql`SELECT COUNT (*) AS count FROM shopping_lists`;
+  return rows[0].count;
+};
+
+export { countLists, create, deactivate, findAllActive, findById };

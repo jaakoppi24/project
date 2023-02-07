@@ -35,12 +35,35 @@ const viewList = async (request) => {
   const url = new URL(request.url);
   const urlParts = url.pathname.split("/");
 
+  const nonCollected1 = await itemService.findAllNonCollected(urlParts[2]);
+  const collected1 = await itemService.findAllCollected(urlParts[2]);
+
+  function compare(a, b) {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  }
+
   const data = {
     list: await listService.findById(urlParts[2]),
-    items: await itemService.findAllNonCollected(urlParts[2]),
+    nonCollected: nonCollected1.sort(compare),
+    collected: collected1.sort(compare),
   };
 
   return new Response(await renderFile("list.eta", data), responseDetails);
 };
 
-export { addList, viewList, viewLists };
+const deactivateList = async (request) => {
+  const url = new URL(request.url);
+  const urlParts = url.pathname.split("/");
+
+  await listService.deactivate(urlParts[2]);
+
+  return redirectTo("/lists");
+};
+
+export { addList, deactivateList, viewList, viewLists };

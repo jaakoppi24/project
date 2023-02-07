@@ -1,2 +1,10 @@
-<h1>Shared Shopping Lists</h1>
+<h1>Shared shopping lists</h1>
+<% if(it.numOfLists > 0){ %> 
+<ul>
+<li>Shopping lists: <%= it.numOfLists %></li>
+<li>Shopping list items: <%= it.numOfItems %></li>
+</ul>
+<% } else{ %>
+<p>No shopping lists yet.</p>
+<% } %>
 <a href="/lists">Lists</a>

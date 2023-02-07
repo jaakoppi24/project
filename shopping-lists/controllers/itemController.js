@@ -20,4 +20,12 @@ const createItem = async (request) => {
   return redirectTo(`/lists/${urlParts[2]}`);
 };
 
-export { createItem };
+const collectItem = async (request) => {
+  const url = new URL(request.url);
+  const urlParts = url.pathname.split("/");
+  await itemService.collect(urlParts[4]);
+
+  return redirectTo(`/lists/${urlParts[2]}`);
+};
+
+export { collectItem, createItem };

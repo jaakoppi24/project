@@ -1,14 +1,22 @@
 <h1><%= it.list.name %></h1>
 
-<form action"/lists/<%= it.list.id %>/items" method="POST">
+<form action = "/lists/<%= it.list.id %>/items" method="POST">
  Item: <input type="text" name="name" />
  <input type="submit" value="Add item!" />
 </form>
 
 <ul>
-<% it.items.forEach((item) => { %>
+<% it.nonCollected.sort(function(a, b){return b-a}).forEach((item) => { %>
   <li>
   <%= item.name %>
+  <form method="POST" action="/lists/<%= it.list.id %>/items/<%= item.id %>/collect">
+  <input type="submit" value="Mark collected!">
+  </form>
   </li>
 <% }); %>
+<% it.collected.sort(function(a, b){return b-a}).forEach((item) => { %>
+   <li><del><%= item.name %></del></li>
+<% }); %>
 </ul>
+
+<a href="/lists">Shopping lists</a>
